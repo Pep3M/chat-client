@@ -1,0 +1,16 @@
+.users-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.users-title {
+  text-align: center;
+  font: bold 22px sans-serif;
+}
+
+.users-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
