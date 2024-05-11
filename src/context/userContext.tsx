@@ -35,11 +35,12 @@ export default function UserProvider({ children }: { children: React.ReactNode }
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [targetUser, setTargetUser] = useState<User | null>(null);
   const [messages, setMessages] = useState<TMessage[]>([]);
-
+  
   const socket = useMemo(() => currentUser && targetUser && io(
     'http://localhost:4000',
     {
       auth: {
+        serverOffset: 0,
         user_id: currentUser?.id,
         target_user_id: targetUser?.id,
       },
@@ -52,18 +53,26 @@ export default function UserProvider({ children }: { children: React.ReactNode }
 
     socket.connect();
 
-    socket.on('chat message', (msg, serverOffset, currentUser) => {
-      console.log('response from server', msg, serverOffset, currentUser);
+    socket.on('chat message', (msg: TMessage & { user_id: number, target_user_id: number }) => {
+      console.log(msg);
+      if (!(
+        (msg.user_id === currentUser?.id || msg.user_id === targetUser?.id) &&
+        (msg.target_user_id === currentUser?.id || msg.target_user_id === targetUser?.id)
+      )) return;
+
       setMessages((prevMessages) => [
         ...prevMessages,
-        msg,
+        {
+          ...msg,
+          type: msg.user_id === currentUser?.id ? 'sent' : 'receive',
+        },
       ]);
     });
 
     return () => {
       socket.disconnect();
     };
-  }, [socket, currentUser]);
+  }, [socket, currentUser?.id, targetUser?.id]);
 
   const sendMessage = useCallback((message: string) => {
     if (!socket) return;
