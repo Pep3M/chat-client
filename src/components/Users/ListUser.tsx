@@ -12,13 +12,31 @@ const ListUser = () => {
   const { users, setUsers, currentUser, setCurrentUser, setTargetUser } = useUser()
 
   const [isLoading, setIsLoading] = useState(false)
-  
+  const [isLoadingUsers, setIsLoadingUsers] = useState(false)
+  const [toExpenseFetch, setToExpenseFetch] = useState(false);
+
+  // fetch users
   useEffect(() => {
+    setIsLoadingUsers(true)
     fetch(USERS)
       .then(res => res.json())
       .then((data) => setUsers(data as User[]))
+      .finally(() => setIsLoadingUsers(false))
   }, [setUsers]);
 
+  // handle expense request
+  useEffect(() => {
+    if (isLoadingUsers) {
+      const timer = setTimeout(() => {
+        setToExpenseFetch(true);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    } else {
+      setToExpenseFetch(false);
+    }
+  }, [isLoadingUsers]);
+  
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
@@ -43,6 +61,9 @@ const ListUser = () => {
   
   return (
     <div className='users-container'>
+      {isLoadingUsers && <h2>Fetching users...</h2>}
+      {toExpenseFetch && <h3>Please, wait a moment in time the server is waking up...</h3>}
+      
       {!currentUser && users.length > 0 ? <div >
         <h1 className="users-title">Choose your user</h1>
         <div className="users-list">
