@@ -3,7 +3,7 @@
 ![1715484432875](image/README/1715484432875.png)
 
 This is a simple project for creating a chat client using [React UI Chat](https://www.npmjs.com/package/react-ui-chat).
-The backend (express + socket.io in NodeJs) for this is provided by [Chat Server](https://github.com/Pep3M/chat-client).
+The backend (express + socket.io in NodeJs) for this is provided by [Chat Server](https://github.com/Pep3M/chat-server).
 
 ## Installation
 
