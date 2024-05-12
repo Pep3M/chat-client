@@ -63,7 +63,7 @@ const ListUser = () => {
 
       {/* create an user */}
       <form onSubmit={handleSubmit} >
-        <h1 className="users-title">Create an user</h1>
+        <h1 className="users-title">{!isLoading ? 'Create an user' : 'Creating...'}</h1>
         <input type="text" id="name" placeholder="Name" disabled={isLoading}/>
         <button type='submit' disabled={isLoading}>Create</button>
       </form>
