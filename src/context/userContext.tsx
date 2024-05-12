@@ -30,6 +30,8 @@ export const userContext = createContext<UserContext>({
   sendMessage: () => { },
 });
 
+const domain = import.meta.env.VITE_DOMAIN || 'http://localhost:4000';
+
 export default function UserProvider({ children }: { children: React.ReactNode }) {
   const [users, setUsers] = useState<User[]>([]);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -37,7 +39,7 @@ export default function UserProvider({ children }: { children: React.ReactNode }
   const [messages, setMessages] = useState<TMessage[]>([]);
   
   const socket = useMemo(() => currentUser && targetUser && io(
-    'http://localhost:4000',
+    domain,
     {
       auth: {
         serverOffset: 0,
