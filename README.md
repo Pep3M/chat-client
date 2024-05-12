@@ -1,30 +1,30 @@
-# React + TypeScript + Vite
+# Chat Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![1715484432875](image/README/1715484432875.png)
 
-Currently, two official plugins are available:
+This is a simple project for creating a chat client using [React UI Chat](https://www.npmjs.com/package/react-ui-chat).
+The backend (express + socket.io in NodeJs) for this is provided by [Chat Server](https://github.com/Pep3M/chat-client).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Installation
 
-## Expanding the ESLint configuration
+To install the chat client, follow these steps:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. Clone the repository: `$ git clone https://github.com/Pep3M/chat-client.git`
+2. Change into the project directory: `$ cd chat-client`
+3. Install the dependencies: `$ npm install`
 
-- Configure the top-level `parserOptions` property like this:
+## Usage
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+To start the chat client in development, run the following command:
+  
+```bash 
+npm run dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Contributing
+
+Contributions are always welcome! Please create a PR with your changes.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
