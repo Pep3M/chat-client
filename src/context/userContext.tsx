@@ -53,20 +53,30 @@ export default function UserProvider({ children }: { children: React.ReactNode }
 
     socket.connect();
 
-    socket.on('chat message', (msg: TMessage & { user_id: number, target_user_id: number }) => {
-      console.log(msg);
+    socket.on('chat message', (msg: TMessage & { user_id: number, target_user_id: number, randomId?: number }) => {
       if (!(
         (msg.user_id === currentUser?.id || msg.user_id === targetUser?.id) &&
         (msg.target_user_id === currentUser?.id || msg.target_user_id === targetUser?.id)
       )) return;
 
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          ...msg,
-          type: msg.user_id === currentUser?.id ? 'sent' : 'receive',
-        },
-      ]);
+      setMessages((prevMessages) => {
+        const newMessages = [...prevMessages];
+        const index = newMessages.findIndex((m) => m.id === msg.randomId);
+        if (index !== -1) {
+          newMessages[index] = {
+            ...newMessages[index],
+            id: msg.id,
+            type: msg.user_id === currentUser?.id ? 'sent' : 'receive',
+            status: 'delivered',
+          };
+        } else {
+          newMessages.push({
+            ...msg,
+            type: msg.user_id === currentUser?.id ? 'sent' : 'receive',
+          });
+        }
+        return newMessages as TMessage[];
+      });
     });
 
     return () => {
@@ -75,8 +85,20 @@ export default function UserProvider({ children }: { children: React.ReactNode }
   }, [socket, currentUser?.id, targetUser?.id]);
 
   const sendMessage = useCallback((message: string) => {
+    const randomId = Math.floor(Math.random() * 1000);
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      {
+        id: randomId,
+        type: 'sent',
+        message,
+        status: 'sending',
+        date: new Date().toISOString(),
+      },
+    ]);
+    
     if (!socket) return;
-    socket.emit('chat message', message);
+    socket.emit('chat message', message, randomId);
   }, [socket]);
 
   const value = useMemo(() => ({
